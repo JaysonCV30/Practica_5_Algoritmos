@@ -6,7 +6,8 @@ public class EightOffGame {
     private Columna[] columnas;
     private CeldaLibre celdas;
     private Fundacion[] fundaciones;
-    private Lista<Movimiento> historial;
+    private ListaDoble<Movimiento> historial;
+    private NodoDoble<Movimiento> cursorHistorial;
 
     public EightOffGame() {
         baraja = new Baraja();
@@ -20,7 +21,8 @@ public class EightOffGame {
         for (int i = 0; i < 4; i++) {
             fundaciones[i] = new Fundacion();
         }
-        historial = new Lista<>();
+        historial = new ListaDoble<>();
+        cursorHistorial = null;
         repartirCartas();
     }
 
@@ -253,7 +255,15 @@ public class EightOffGame {
             tipo = Movimiento.TipoMovimiento.ENTRE_COLUMNAS;
         }
 
-        historial.insertaFinal(new Movimiento(origen, destino, carta, tipo));
+        Movimiento nuevo = new Movimiento(origen, destino, carta, tipo);
+
+        if (cursorHistorial != null && cursorHistorial.getSig() != null) {
+            cursorHistorial.setSig(null); // descarta futuros
+            historial.setFin(cursorHistorial);
+        }
+
+        historial.insertaFinal(nuevo);
+        cursorHistorial = historial.getFin();
     }
 
     public void deshacerUltimoMovimiento() {
@@ -262,8 +272,8 @@ public class EightOffGame {
             return;
         }
 
-        Nodo<Movimiento> actual = historial.getInicio();
-        Nodo<Movimiento> anterior = null;
+        NodoDoble<Movimiento> actual = historial.getInicio();
+        NodoDoble<Movimiento> anterior = null;
 
         while (actual.getSig() != null) {
             anterior = actual;
@@ -368,5 +378,34 @@ public class EightOffGame {
 
     public Fundacion[] getFundaciones() {
         return fundaciones;
+    }
+
+    public boolean puedeDeshacerVisual() {
+        return cursorHistorial != null;
+    }
+
+    public boolean puedeRehacerVisual() {
+        return cursorHistorial != null && cursorHistorial.getSig() != null;
+    }
+
+    public void deshacerVisual() {
+        if (puedeDeshacerVisual()) {
+            cursorHistorial.getInfo().revertir();
+            cursorHistorial = cursorHistorial.getAnt();
+        }
+    }
+
+    public void rehacerVisual() {
+        if (puedeRehacerVisual()) {
+            cursorHistorial = cursorHistorial.getSig();
+            cursorHistorial.getInfo().reaplicar();
+        }
+    }
+
+    public void confirmarEstadoDesdeHistorial() {
+        if (cursorHistorial != null && cursorHistorial.getSig() != null) {
+            cursorHistorial.setSig(null);
+            historial.setFin(cursorHistorial);
+        }
     }
 }

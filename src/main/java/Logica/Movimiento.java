@@ -72,4 +72,29 @@ public class Movimiento {
     public TipoMovimiento getTipo() {
         return tipo;
     }
+
+    public void reaplicar() {
+        switch (tipo) {
+            case COLUMNA_A_CELDA -> {
+                ((Columna) origen).removerUltimaCarta();
+                ((CeldaLibre) destino).agregar(cartaMovida);
+            }
+            case CELDA_A_COLUMNA -> {
+                ((CeldaLibre) origen).remover(((CeldaLibre) origen).contarCartas() - 1);
+                ((Columna) destino).agregarCarta(cartaMovida);
+            }
+            case COLUMNA_A_FUNDACION -> {
+                ((Columna) origen).removerUltimaCarta();
+                ((Fundacion) destino).agregarCarta(cartaMovida);
+            }
+            case CELDA_A_FUNDACION -> {
+                ((CeldaLibre) origen).remover(((CeldaLibre) origen).contarCartas() - 1);
+                ((Fundacion) destino).agregarCarta(cartaMovida);
+            }
+            case ENTRE_COLUMNAS -> {
+                ((Columna) origen).removerUltimaCarta();
+                ((Columna) destino).agregarCarta(cartaMovida);
+            }
+        }
+    }
 }

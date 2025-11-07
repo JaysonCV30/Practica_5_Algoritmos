@@ -14,7 +14,7 @@ public class Juego extends Application {
 
         Scene scene = new Scene(vista, 920, 950);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Eight Off - Práctica 4");
+        primaryStage.setTitle("Eight Off - Práctica 5");
         primaryStage.show();
     }
 
