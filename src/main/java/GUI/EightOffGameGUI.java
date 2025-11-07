@@ -18,6 +18,7 @@ public class EightOffGameGUI extends BorderPane {
     private Carta cartaSeleccionada = null;
     private int origenSeleccionado = -1; // índice entre 0 y 19
     private CartaGUI cartaGUISeleccionada;
+    private boolean modoHistorial = false;
 
     public EightOffGameGUI(EightOffGame juego) {
         this.juego = juego;
@@ -29,10 +30,11 @@ public class EightOffGameGUI extends BorderPane {
         // Top: botones y mensaje
         Button btnDeshacer = new Button("Deshacer");
         Button btnPista = new Button("Pista");
+        Button btnHistorial = new Button("Ver historial");
         mensajeEstado = new Label("Bienvenido a Eight Off");
         mensajeEstado.setTextFill(Color.DARKBLUE);
 
-        HBox barraSuperior = new HBox(20, btnDeshacer, btnPista, mensajeEstado);
+        HBox barraSuperior = new HBox(15, btnDeshacer, btnPista, btnHistorial, mensajeEstado);
         barraSuperior.setPadding(new Insets(10));
         setTop(barraSuperior);
 
@@ -82,6 +84,14 @@ public class EightOffGameGUI extends BorderPane {
             } else {
                 mensajeEstado.setText("No hay movimientos válidos");
             }
+        });
+
+        btnHistorial.setOnAction(e -> {
+            HistorialWindow ventana = new HistorialWindow(juego, () -> {
+                actualizarTodo();
+                mensajeEstado.setText("Estado confirmado desde historial");
+            });
+            ventana.show();
         });
     }
 

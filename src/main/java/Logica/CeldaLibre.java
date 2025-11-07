@@ -37,8 +37,8 @@ public class CeldaLibre {
             return null;
         }
 
-        Carta carta = ver(posicion); 
-        celdas.eliminaEn(posicion);  
+        Carta carta = ver(posicion);
+        celdas.eliminaEn(posicion);
         return carta;
     }
 

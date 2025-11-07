@@ -408,4 +408,20 @@ public class EightOffGame {
             historial.setFin(cursorHistorial);
         }
     }
+    
+    public void setCursorAlFinal(){
+        cursorHistorial = historial.getFin();
+    }
+    
+    public NodoDoble<Movimiento> getCursorHistorial(){
+        return cursorHistorial;
+    }
+    
+    public ListaDoble<Movimiento> getHistorial(){
+        return historial;
+    }
+    
+    public void setCursorHistorial(NodoDoble<Movimiento> nuevoCursor) {
+        this.cursorHistorial = nuevoCursor;
+    }
 }
