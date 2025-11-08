@@ -256,6 +256,9 @@ public class EightOffGame {
         }
 
         Movimiento nuevo = new Movimiento(origen, destino, carta, tipo);
+        //Captura el estado visual antes y después
+        nuevo.setEstadoAntes(new EstadoTablero(this)); 
+        nuevo.setEstadoDespues(new EstadoTablero(this));
 
         if (cursorHistorial != null && cursorHistorial.getSig() != null) {
             cursorHistorial.setSig(null); // descarta futuros
@@ -408,19 +411,19 @@ public class EightOffGame {
             historial.setFin(cursorHistorial);
         }
     }
-    
-    public void setCursorAlFinal(){
+
+    public void setCursorAlFinal() {
         cursorHistorial = historial.getFin();
     }
-    
-    public NodoDoble<Movimiento> getCursorHistorial(){
+
+    public NodoDoble<Movimiento> getCursorHistorial() {
         return cursorHistorial;
     }
-    
-    public ListaDoble<Movimiento> getHistorial(){
+
+    public ListaDoble<Movimiento> getHistorial() {
         return historial;
     }
-    
+
     public void setCursorHistorial(NodoDoble<Movimiento> nuevoCursor) {
         this.cursorHistorial = nuevoCursor;
     }

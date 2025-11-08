@@ -6,6 +6,8 @@ public class Movimiento {
     private Object destino;
     private Carta cartaMovida;
     private TipoMovimiento tipo;
+    private EstadoTablero estadoAntes;
+    private EstadoTablero estadoDespues;
 
     public Movimiento(Object origen, Object destino, Carta cartaMovida, TipoMovimiento tipo) {
         this.origen = origen;
@@ -96,5 +98,21 @@ public class Movimiento {
                 ((Columna) destino).agregarCarta(cartaMovida);
             }
         }
+    }
+    
+    public void setEstadoAntes(EstadoTablero estadoAntes){
+        this.estadoAntes = estadoAntes;
+    }
+    
+    public void setEstadoDespues(EstadoTablero estadoDespues){
+        this.estadoDespues = estadoDespues;
+    }
+    
+    public EstadoTablero getEstadoDespues(){
+        return estadoDespues;
+    }
+    
+    public EstadoTablero getEstadoAntes(){
+        return estadoAntes;
     }
 }
