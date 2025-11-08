@@ -69,4 +69,8 @@ public class Fundacion {
         }
         return cima;
     }
+
+    public void vaciar() {
+        cartas = new Lista<>();
+    }
 }

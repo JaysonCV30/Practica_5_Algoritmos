@@ -52,4 +52,8 @@ public class Columna {
         }
         return carta.getValor() == cima.getValor() - 1 && carta.getPalo() == cima.getPalo();
     }
+
+    public void vaciar() {
+        cartas = new Lista<>();
+    }
 }

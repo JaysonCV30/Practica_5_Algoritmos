@@ -257,7 +257,7 @@ public class EightOffGame {
 
         Movimiento nuevo = new Movimiento(origen, destino, carta, tipo);
         //Captura el estado visual antes y después
-        nuevo.setEstadoAntes(new EstadoTablero(this)); 
+        nuevo.setEstadoAntes(new EstadoTablero(this));
         nuevo.setEstadoDespues(new EstadoTablero(this));
 
         if (cursorHistorial != null && cursorHistorial.getSig() != null) {
@@ -406,10 +406,16 @@ public class EightOffGame {
     }
 
     public void confirmarEstadoDesdeHistorial() {
-        if (cursorHistorial != null && cursorHistorial.getSig() != null) {
-            cursorHistorial.setSig(null);
-            historial.setFin(cursorHistorial);
+        if (cursorHistorial != null) {
+            EstadoTablero estado = cursorHistorial.getInfo().getEstadoDespues();
+            aplicarEstado(estado); 
+
+            if (cursorHistorial.getSig() != null) {
+                cursorHistorial.setSig(null);
+                historial.setFin(cursorHistorial);
+            }
         }
+
     }
 
     public void setCursorAlFinal() {
@@ -426,5 +432,49 @@ public class EightOffGame {
 
     public void setCursorHistorial(NodoDoble<Movimiento> nuevoCursor) {
         this.cursorHistorial = nuevoCursor;
+    }
+
+    public void aplicarEstado(EstadoTablero estado) {
+        // Limpiar estructuras actuales
+        for (Columna col : columnas) {
+            col.vaciar();
+        }
+        celdas.vaciar();
+        for (Fundacion fund : fundaciones) {
+            fund.vaciar();
+        }
+
+        // Copiar columnas
+        NodoDoble<ListaDoble<Carta>> colNode = estado.getColumnas().getInicio();
+        int i = 0;
+        while (colNode != null && i < columnas.length) {
+            NodoDoble<Carta> cartaNode = colNode.getInfo().getInicio();
+            while (cartaNode != null) {
+                columnas[i].agregarCarta(cartaNode.getInfo());
+                cartaNode = cartaNode.getSig();
+            }
+            colNode = colNode.getSig();
+            i++;
+        }
+
+        // Copiar celdas
+        NodoDoble<Carta> celdaNode = estado.getCeldas().getInicio();
+        while (celdaNode != null) {
+            celdas.agregar(celdaNode.getInfo());
+            celdaNode = celdaNode.getSig();
+        }
+
+        // Copiar fundaciones
+        NodoDoble<ListaDoble<Carta>> fundNode = estado.getFundaciones().getInicio();
+        int j = 0;
+        while (fundNode != null && j < fundaciones.length) {
+            NodoDoble<Carta> cartaNode = fundNode.getInfo().getInicio();
+            while (cartaNode != null) {
+                fundaciones[j].agregarCarta(cartaNode.getInfo());
+                cartaNode = cartaNode.getSig();
+            }
+            fundNode = fundNode.getSig();
+            j++;
+        }
     }
 }

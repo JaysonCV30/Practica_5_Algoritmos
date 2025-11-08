@@ -64,4 +64,8 @@ public class CeldaLibre {
     public boolean hayEspacio() {
         return contarCartas() < LIMITE;
     }
+
+    public void vaciar() {
+        celdas = new Lista<>();
+    }
 }
